@@ -45,7 +45,7 @@ public class UserService {
   }
 
   public String decryptAccessToken(User user) {
-    return textEncryptor.decrypt(user.getAccessToken());
+    return tokenEncryptor.decrypt(user.getAccessToken());
   }
 
   private static Long toLong(Object value) {

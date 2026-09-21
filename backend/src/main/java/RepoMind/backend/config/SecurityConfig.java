@@ -2,7 +2,7 @@ package RepoMind.backend.config;
 
 import RepoMind.backend.security.GithubOAuth2UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,11 +20,13 @@ import org.springframework.security.web.authentication.*;
 public class SecurityConfig {
 
   private final GithubOAuth2UserService githubOAuth2UserService;
-  private final AuthenticationSuccessHandler oauth2SuccessHandler;
-  private final AuthenticationFailureHandler oauth2FailureHandler;
 
   @Bean
-  SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+  SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      AuthenticationSuccessHandler oauth2SuccessHandler,
+      AuthenticationFailureHandler oauth2FailureHandler)
+      throws Exception {
     http.cors(Customizer.withDefaults())
         .csrf(csrf -> csrf.disable())
         .sessionManagement(
@@ -45,7 +47,7 @@ public class SecurityConfig {
         .oauth2Login(
             oauth ->
                 oauth
-                    .userInfoEndpoint(userInfo -> userInfo.userService(githubOauth2UserService))
+                    .userInfoEndpoint(userInfo -> userInfo.userService(githubOAuth2UserService))
                     .successHandler(oauth2SuccessHandler)
                     .failureHandler(oauth2FailureHandler))
         .logout(

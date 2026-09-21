@@ -1,6 +1,6 @@
 package RepoMind.backend.config;
 
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -11,8 +11,8 @@ public class CryptoConfig {
 
   @Bean
   TextEncryptor tokenEncryptor(
-      @Value("${app.token-encryptor-password") String password,
-      @Value("${app.token-encryptor-salt") String salt) {
+      @Value("${app.token-encryptor-password}") String password,
+      @Value("${app.token-encryptor-salt}") String salt) {
     return Encryptors.text(password, salt);
   }
 }
