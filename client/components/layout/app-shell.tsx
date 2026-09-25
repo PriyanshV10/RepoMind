@@ -65,11 +65,11 @@ export function AppShell({
               <SidebarMenuButton
                 size="lg"
                 render={<Link href="/dashboard" />}
-                tooltip="DevPilot"
+                tooltip="RepoMind"
               >
                 <RepoMindIcon className="size-8 rounded-[10px]" />
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">DevPilot</span>
+                  <span className="truncate font-semibold">RepoMind</span>
                   <span className="truncate text-xs text-muted-foreground">
                     Chat with your code
                   </span>
