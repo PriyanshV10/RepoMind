@@ -17,6 +17,7 @@ export type Repository = {
   isPrivate: boolean;
   defaultBranch: string;
   language: string | null;
+  htmlUrl: string | null;
   description: string | null;
   indexStatus: IndexStatus;
   indexedAt: string | null;
@@ -30,6 +31,7 @@ export type IndexStatusResponse = {
   repositoryId: string;
   indexStatus: IndexStatus;
   filesTotal: number;
+  filesProcessed: number;
   chunkCount: number;
   indexedAt: string | null;
   errorMessage: string | null;

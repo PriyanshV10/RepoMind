@@ -15,7 +15,7 @@ import { IndexErrorAlert } from "@/components/dashboard/index-error-alert";
 import { LanguageBadge } from "@/components/dashboard/language-badge";
 import { IndexStatusBadge } from "@/components/dashboard/repo-status";
 import { LanguageIcon } from "@/components/icons/language-icon";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
 import { getRepoProgress, useStartIndexing } from "@/hooks/use-repos";
@@ -131,14 +131,15 @@ export function RepoCard({ repo }: { repo: Repository }) {
 
       <div className="mt-auto flex items-center justify-between gap-2 border-t border-dashed border-border/70 p-4">
         {repo.htmlUrl ? (
-          <Button
-            variant="ghost"
-            size="sm"
-            render={<a href={repo.htmlUrl} target="_blank" rel="noreferrer" />}
+          <a
+            href={repo.htmlUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={buttonVariants({ variant: "ghost", size: "sm" })}
           >
             <ExternalLink data-icon="inline-start" />
             GitHub
-          </Button>
+          </a>
         ) : (
           <span />
         )}

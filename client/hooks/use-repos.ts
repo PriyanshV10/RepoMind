@@ -4,7 +4,6 @@ import { toast } from "@/components/ui/toast";
 import { api, Repository } from "@/lib/api";
 import { queryKeys } from "@/lib/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { error } from "console";
 
 const INDEXING_POLL_MS = 2000;
 

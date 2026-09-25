@@ -3,9 +3,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import { api, ApiError } from "@/lib/api";
+import { api } from "@/lib/api";
 import { queryKeys } from "@/lib/query-keys";
-import { serialize } from "v8";
 
 export const AUTH_COOKIE = "repomind_auth";
 
