@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CodeContextRetrieval {
+public class CodeContextRetriever {
 
   private static final String NO_MATCHES = "(no matching code chunks found)";
 

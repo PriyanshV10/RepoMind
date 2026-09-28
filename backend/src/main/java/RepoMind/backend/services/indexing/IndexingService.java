@@ -44,6 +44,9 @@ public class IndexingService {
   @Value("${app.indexing.max-file-bytes:102400}")
   private long maxFileBytes;
 
+  @Value("${app.indexing.embedding-delay-ms:1000}")
+  private long embeddingDelayMs;
+
   public Repository startIndexing(UUID repoId, UUID userId) {
     Repository repo =
         repositoryRepository
@@ -102,8 +105,7 @@ public class IndexingService {
         batch.addAll(chunks);
         totalChunks += chunks.size();
         if (batch.size() >= VECTOR_BATCH_SIZE) {
-          vectorStore.add(batch);
-          batch.clear();
+          saveBatchWithRetry(batch);
         }
       } catch (Exception ex) {
         log.warn("Skipping file {} in {}: {}", path, repo.getFullName(), ex.getMessage());
@@ -202,5 +204,41 @@ public class IndexingService {
               repo.setUpdatedAt(Instant.now());
               repositoryRepository.save(repo);
             });
+  }
+
+  private void saveBatchWithRetry(List<Document> batch) throws InterruptedException {
+    if (batch.isEmpty()) {
+      return;
+    }
+    int maxRetries = 3;
+    for (int attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        vectorStore.add(batch);
+        batch.clear();
+
+        if (embeddingDelayMs > 0) {
+          Thread.sleep(embeddingDelayMs);
+        }
+        return;
+      } catch (Exception ex) {
+        String msg = ex.getMessage() != null ? ex.getMessage() : "";
+        if (msg.contains("429") || msg.toLowerCase().contains("quota")) {
+          log.warn(
+              "Hit Google rate limit (attempt {}/{}). Waiting 10s before retry...",
+              attempt,
+              maxRetries);
+          try {
+            Thread.sleep(10_000); // Wait 10 seconds as recommended by Google
+          } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted during rate limit backoff", ie);
+          }
+        } else {
+          batch.clear(); // Clear bad batch on unrecoverable error so next files don't fail
+          throw ex;
+        }
+      }
+    }
+    batch.clear();
   }
 }

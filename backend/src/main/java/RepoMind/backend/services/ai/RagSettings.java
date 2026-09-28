@@ -1,5 +1,7 @@
 package RepoMind.backend.services.ai;
 
+import RepoMind.backend.services.indexing.CodeChunker;
+
 public final class RagSettings {
 
   /** How many code chunks to fetch from the vector db per question */
@@ -10,7 +12,7 @@ public final class RagSettings {
 
   /**
    * Metadata key stored on each embedded document ({@link
-   * RepoMind.backend.services.indexing.CodeChunker})
+   * CodeChunker})
    */
   public static final String METADATA_REPO_ID = "repoId";
 
