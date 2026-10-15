@@ -228,7 +228,7 @@ public class IndexingService {
               attempt,
               maxRetries);
           try {
-            Thread.sleep(10_000); // Wait 10 seconds as recommended by Google
+            Thread.sleep(20_000);
           } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted during rate limit backoff", ie);

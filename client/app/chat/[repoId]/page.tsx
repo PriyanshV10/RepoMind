@@ -1,6 +1,6 @@
 "use client";
 
-import ChatView from "@/components/chat/chat-view";
+import { ChatView } from "@/components/chat/chat-view";
 import { RequireAuth } from "@/components/providers/require-auth";
 import { use } from "react";
 
